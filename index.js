@@ -52,7 +52,6 @@ app.get('/token', async (req, res) => {
                 micrositeId: "hostels"
             })
         });
-        return res.send("------------>")
         if (!response.ok) {
             throw new Error('Request failed');
         }
