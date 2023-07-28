@@ -63,7 +63,7 @@ app.get('/token', async (req, res) => {
     //     console.error("Error:", error.message);
     //     return res.status(500).send({ error: "An error occurred" });
     // }
-    return res.send("------------------->");
+    return res.send("comment");
 });
 app.get('/hotels', async (req, res) => {
     try {
