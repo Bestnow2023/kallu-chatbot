@@ -41,28 +41,29 @@ const upload = multer({
 });
 
 app.get('/token', async (req, res) => {
-    try {
-        const response = await fetch("https://www.kallu.travel/resources/authentication/authenticate", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                username: "apiuser",
-                password: "2ZnFQwUurdfakin",
-                micrositeId: "hostels"
-            })
-        });
+    // try {
+    //     const response = await fetch("https://www.kallu.travel/resources/authentication/authenticate", {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({
+    //             username: "apiuser",
+    //             password: "2ZnFQwUurdfakin",
+    //             micrositeId: "hostels"
+    //         })
+    //     });
 
-        if (!response.ok) {
-            throw new Error('Request failed');
-        }
+    //     if (!response.ok) {
+    //         throw new Error('Request failed');
+    //     }
 
-        const jsonData = await response.json(); // Convert the response body to JSON format
+    //     const jsonData = await response.json(); // Convert the response body to JSON format
 
-        return res.send(jsonData);
-    } catch (error) {
-        console.error("Error:", error.message);
-        return res.status(500).send({ error: "An error occurred" });
-    }
+    //     return res.send(jsonData);
+    // } catch (error) {
+    //     console.error("Error:", error.message);
+    //     return res.status(500).send({ error: "An error occurred" });
+    // }
+    return res.send("------------------->");
 });
 app.get('/hotels', async (req, res) => {
     try {
