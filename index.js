@@ -61,7 +61,7 @@ app.get('/token', async (req, res) => {
         return res.send(jsonData);
     } catch (error) {
         console.error("Error:", error.message);
-        return res.status(500).send({ error: error });
+        return res.status(500).send({ error: error.message });
     }
 });
 app.get('/hotels', async (req, res) => {
