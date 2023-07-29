@@ -98,7 +98,7 @@ select {
     max-width: 55%;
     min-width: 10%;
     align-self: flex-start;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .my-question {
@@ -108,7 +108,7 @@ select {
     max-width: 55%;
     align-self: flex-end;
     flex-flow: row-reverse;
-    align-items: center;
+    /* align-items: center; */
 }
 
 /* Change background color of the input container */

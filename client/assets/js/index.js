@@ -33,8 +33,8 @@ promptInput.addEventListener('keydown', function(event) {
         if (event.ctrlKey || event.shiftKey) {
             document.execCommand('insertHTML', false, '<br/><br/>');
         } else {
-            // getGPTResult();
-            getHotels();
+            getGPTResult();
+            // getHotels();
         }
     }
 });
@@ -92,7 +92,7 @@ function setRetryResponse(prompt, uniqueId) {
 
 async function regenerateGPTResult() {
     try {
-        // await getGPTResult(promptToRetry, uniqueIdToRetry)
+        await getGPTResult(promptToRetry, uniqueIdToRetry)
         regenerateResponseButton.classList.add("loading");
     } finally {
         regenerateResponseButton.classList.remove("loading");
@@ -110,7 +110,14 @@ async function getToken() {
         // Handle errors if needed
     }
 }
-
+async function typewriterEffect(text, element, delay) {
+    console.log(text);
+  const characters = text.split('');
+  for (let i = 0; i < characters.length; i++) {
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    element.innerHTML += characters[i];
+  }
+}
 async function getHotels(_promptToRetry, _uniqueIdToRetry) {
     const prompt = _promptToRetry ?? promptInput.textContent;
     // if (prompt.includes("Berlin") && prompt.includes("hotel")) {
@@ -156,6 +163,12 @@ async function getHotels(_promptToRetry, _uniqueIdToRetry) {
             return;
         }
         const jsonData = await response.json(); // Convert the response body to JSON format
+        setTimeout(() => {
+            // Scroll to the bottom of the response list
+            clearInterval(loadInterval)
+            responseList.scrollTop = responseList.scrollHeight;
+            hljs.highlightAll();
+        }, 10);
         var hotel = jsonData.hotel
         var responseText = "";
         console.log(jsonData.hotel)
@@ -167,19 +180,13 @@ async function getHotels(_promptToRetry, _uniqueIdToRetry) {
             }
         }
         // Set the response text
-        responseElement.innerHTML = converter.makeHtml(responseText.trim());
-
+        // responseElement.innerHTML = responseText;
+        typewriterEffect(responseText, responseElement, 10)
         promptToRetry = null;
         uniqueIdToRetry = null;
         regenerateResponseButton.style.display = 'none';
         isGeneratingResponse = false;
         submitButton.classList.remove("loading");
-        setTimeout(() => {
-            clearInterval(loadInterval)
-            // Scroll to the bottom of the response list
-            responseList.scrollTop = responseList.scrollHeight;
-            hljs.highlightAll();
-        }, 10);
     } catch (err) {
         setRetryResponse(prompt, uniqueId);
         // If there's an error, show it in the response element
@@ -281,9 +288,9 @@ async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
             responseElement.innerHTML = `<img src="${responseText}" class="ai-image" alt="generated image"/>`
         } else {
             // Set the response text
-            responseElement.innerHTML = converter.makeHtml(responseText.trim());
+            // responseElement.innerHTML = converter.makeHtml(responseText.trim());
+            typewriterEffect(responseText, responseElement, 10);
         }
-
         promptToRetry = null;
         uniqueIdToRetry = null;
         regenerateResponseButton.style.display = 'none';
@@ -309,8 +316,8 @@ async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
 }
 
 submitButton.addEventListener("click", () => {
-    // getGPTResult();
-    getHotels();
+    getGPTResult();
+    // getHotels();
 });
 regenerateResponseButton.addEventListener("click", () => {
     regenerateGPTResult();
@@ -319,5 +326,4 @@ regenerateResponseButton.addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", function(){
     promptInput.focus();
 });
-
 getToken()
